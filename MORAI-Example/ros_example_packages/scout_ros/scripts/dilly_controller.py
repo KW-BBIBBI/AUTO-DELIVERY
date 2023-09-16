@@ -38,6 +38,7 @@ class dilly_controller :
 
     def statusCB(self,msg):
         #선속도, 각속도
+        print(msg.left_front_wheel_rpm)
         print(msg.acceleration, msg.position)
 
 if __name__ == '__main__':
