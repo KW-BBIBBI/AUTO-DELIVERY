@@ -31,7 +31,7 @@ class test :
 
         self.proj_UTM = pyproj.Proj(proj='utm', zone=52, ellps='WGS84', preserve_units=False)
         rospack=rospkg.RosPack()
-        pkg_path=rospack.get_path('scout_ros')
+        pkg_path=rospack.get_path('dilly_auto_driving')
         full_path=pkg_path +'/'+ self.path_folder_name+'/'+self.make_path_name+'.txt'
         self.f=open(full_path, 'w')
 

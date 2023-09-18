@@ -8,19 +8,18 @@ from nav_msgs.msg import Path,Odometry
 from std_msgs.msg import Float64,Int16,Float32MultiArray
 from geometry_msgs.msg import Vector3
 from geometry_msgs.msg import PoseStamped,Point,Twist
-from morai_msgs.msg import EgoVehicleStatus,ObjectStatusList
-from scout_ros.utils import pathReader, findLocalPath,purePursuit,cruiseControl,vaildObject ,velocityPlanning ,latticePlanner
+from morai_msgs.msg import EgoVehicleStatus, ObjectStatusList, SkidSteer6wUGVCtrlCmd, SkidSteer6wUGVStatus
+from dilly_auto_driving.utils import pathReader, findLocalPath,purePursuit,cruiseControl,vaildObject ,velocityPlanning ,latticePlanner
 import tf
-from scout_msgs.msg import ScoutStatus
 from math import cos,sin,sqrt,pow,atan2,pi
 from morai_msgs.msg import GPSMessage
 import pyproj
 from sensor_msgs.msg import Imu
 
-class scout_status:
+class dilly_status:
     def __init__(self):
-        self.position = Vector3()
         self.heading = 0.0
+        self.position = Vector3()
         self.velocity = Vector3()
 
 
@@ -33,15 +32,15 @@ class gen_planner():
         self.x_offset=float(arg[2])
         self.y_offset=float(arg[3])
         
-        path_reader=pathReader('scout_ros') ## 경로 파일의 위치
+        path_reader=pathReader('dilly_auto_driving') ## 경로 파일의 위치
 
         #publisher
         global_path_pub= rospy.Publisher('/global_path',Path, queue_size=1) ## global_path publisher
         local_path_pub= rospy.Publisher('/local_path',Path, queue_size=1) ## local_path publisher
-        ctrl_pub = rospy.Publisher('/cmd_vel',Twist, queue_size=1) ## Vehicl Control
-        ctrl_msg= Twist()
+        ctrl_pub = rospy.Publisher('/6wheel_skid_ctrl_cmd',SkidSteer6wUGVCtrlCmd, queue_size=1) ## Vehicl Control
+        ctrl_msg= SkidSteer6wUGVCtrlCmd()
         odom_pub = rospy.Publisher('odom',Odometry, queue_size=1)
-        self.status_msg = scout_status()
+        self.status_msg = dilly_status()
         
 
         ########################  lattice  ########################
@@ -55,24 +54,25 @@ class gen_planner():
         rospy.Subscriber("/Object_topic", ObjectStatusList, self.objectInfoCB) ## Object information Subscriber
         rospy.Subscriber("/gps", GPSMessage, self.gpsCB)
         self.image_sub = rospy.Subscriber("/imu", Imu, self.imuCB)
-        self.ego_sub = rospy.Subscriber("/scout_status",ScoutStatus, self.statusCB)
+        self.ego_sub = rospy.Subscriber("/dilly_status",SkidSteer6wUGVStatus, self.statusCB)
 
         #def
-        self.is_status = False
-        self.is_obj = False ## 장애물 상태 점검
-        self.is_gps = False
+        self.is_status = False # map ->
         self.is_imu = False
+        self.is_gps = False
+        self.is_obj = False ## 장애물 상태 점검
+
 
         #class
         
         pure_pursuit=purePursuit() ## purePursuit import
         self.cc=cruiseControl(0.5,1.0) ## cruiseControl import (object_vel_gain, object_dis_gain)
         self.vo=vaildObject() ## 장애물 유무 확인 (TrafficLight)
-        self.proj_UTM = pyproj.Proj(proj='utm', zone=52, ellps='WGS84', preserve_units=False)
+        self.proj_UTM = pyproj.Proj(proj='utm', zone=52, ellps='WGS84', preserve_units=False)# GPS를 UTM 좌표계로 바꿔주는 코드
 
-        self.global_path = path_reader.read_txt(self.path_name)
+        self.global_path = path_reader.read_txt(self.path_name) # 직접 작성한 txt로 global path 작성
 
-        normal_velocity = 11/3.6
+        normal_velocity = 11/3.6    # km/h to m/sec
         vel_planner=velocityPlanning(normal_velocity,0.15) ## 속도 계획
         vel_profile=vel_planner.curveBasedVelocity(self.global_path,100)
 
@@ -87,7 +87,7 @@ class gen_planner():
         while not rospy.is_shutdown():
             print(self.is_status , self.is_imu ,self.is_gps ,self.is_obj)
             if self.is_status == True and self.is_imu == True and self.is_gps == True and self.is_obj == True:
-                self.getScoutStatus()
+                self.getDillyStatus()
                 ## global_path와 차량의 status_msg를 이용해 현제 waypoint와 local_path를 생성
                 local_path,self.current_waypoint=findLocalPath(self.global_path,self.status_msg) 
                 
@@ -133,10 +133,10 @@ class gen_planner():
                 count+=1
                 rate.sleep()
 
-    def getScoutStatus(self): ## Vehicl Status Subscriber 
+    def getDillyStatus(self): ## Vehicle Status Subscriber (Dilly의 위치 값을 저장)
         self.status_msg.position.x = self.xy_zone[0] - self.x_offset
         self.status_msg.position.y = self.xy_zone[1] - self.y_offset
-        self.status_msg.heading = self.euler_data[2] * 180 / pi
+        self.status_msg.heading = self.euler_data[2] * 180 / pi 
         self.status_msg.velocity.x = self.velocity
         br = tf.TransformBroadcaster()
         br.sendTransform((self.status_msg.position.x, self.status_msg.position.y, self.status_msg.position.z),
@@ -203,8 +203,6 @@ class gen_planner():
         odom.pose.pose.orientation.y=quaternion[1]
         odom.pose.pose.orientation.z=quaternion[2]
         odom.pose.pose.orientation.w=quaternion[3]
-
-
         return odom
 
 
@@ -229,6 +227,6 @@ class gen_planner():
     
 if __name__ == '__main__':
     try:
-        kcity_pathtracking=gen_planner()
+        coex_pathtracking=gen_planner()
     except rospy.ROSInterruptException:
         pass
