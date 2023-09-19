@@ -13,8 +13,7 @@ class Odom_Maker:
 
         gps_subs=rospy.Subscriber("/gps", GPSMessage, self.gps_subs_CB)
         odom_pub = rospy.Publisher("/odom", Odometry, queue_size=10)
-         
-
+        
         pass
 
     def gps_subs_CB(self):
