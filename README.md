@@ -32,4 +32,4 @@
 |:---:|:---:|
 |Ubuntu|20.04.6 LTS|
 |ROS|Noetic|
-|MORAI|230911.S2.woowa3|
+|MORAI|230911.S2.woowa5|
