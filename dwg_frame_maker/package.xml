@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>dwg_odom_maker</name>
+  <name>dwg_frame_maker</name>
   <version>0.0.0</version>
   <description>The dwg_odom_maker package</description>
 
