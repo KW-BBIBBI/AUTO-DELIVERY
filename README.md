@@ -33,3 +33,11 @@
 |Ubuntu|20.04.6 LTS|
 |ROS|Noetic|
 |MORAI|230911.S2.woowa5|
+
+## Mapping
+```
+roslaunch velodyne_pointcloud VLP16_points.launch
+rosrun changmin convert_gps.py
+roslaunch hdl_graph_slam.launch
+rviz
+```
