@@ -5,7 +5,11 @@
 
   <!-- declare arguments with default values -->
   <arg name="calibration" default="$(find velodyne_pointcloud)/params/VLP16db.yaml"/>
+<<<<<<< HEAD
   <arg name="device_ip" default="127.0.0.1" />
+=======
+  <arg name="device_ip" default="" />
+>>>>>>> 5c7e251b8b5a3c7c186fa4bd6892b0fd8ce54b4f
   <arg name="frame_id" default="velodyne" />
   <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
   <arg name="max_range" default="130.0" />
