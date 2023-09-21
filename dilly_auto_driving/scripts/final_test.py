@@ -125,7 +125,7 @@ class gen_planner():
 
                 # local_path_pub.publish(local_path) ## Local Path 출력
                 # ctrl_pub.publish(ctrl_msg) ## Vehicl Control 출력
-                # odom_pub.publish(self.makeOdomMsg())
+                # odom_pub.publish(self.())
                 # self.print_info()
             
                 # if count==30 : ## global path 출력
@@ -143,7 +143,7 @@ class gen_planner():
         br.sendTransform((self.status_msg.position.x, self.status_msg.position.y, self.status_msg.position.z),
                         tf.transformations.quaternion_from_euler(0, 0, (self.status_msg.heading)/180*pi),
                         rospy.Time.now(),
-                        "gps",
+                        "gps", #=> slam , gps , lidar etc..
                         "map")
         self.is_status=True
 
