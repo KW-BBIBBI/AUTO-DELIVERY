@@ -3,15 +3,15 @@
   <!-- arguments -->
   <arg name="nodelet_manager" default="velodyne_nodelet_manager" />
   <arg name="enable_floor_detection" default="false" />
-  <arg name="enable_gps" default="fasle" />
+  <arg name="enable_gps" default="true" />
   <arg name="enable_imu_acc" default="false" />
-  <arg name="enable_imu_ori" default="false" />
+  <arg name="enable_imu_ori" default="true" />
 
   <!-- hdl_graph_slam will publish its estimated pose from odom to base_link within the following structure -->
   <!-- ***** map -> odom -> base_link -> velodyne ***** -->
   <!-- these can be named in the following -->
   <!-- topic for hdl to find velodyne points -->
-  <arg name="points_topic" default="/lidar3D" />
+  <arg name="points_topic" default="/velodyne_points" />
   <!-- what should the map frame be called -->
   <arg name="map_frame_id" default="map" />
   <!-- what should the base link frame be called -->
@@ -28,13 +28,13 @@
   <arg name="robot_odom_frame_id" default="robot_odom" />
 
   <!-- transformation between lidar and base_link -->
-  <node pkg="tf" type="static_transform_publisher" name="lidar2base_publisher" args="0 0 1 0 0 0 $(arg base_link_frame_id) velodyne 10" />
-  <node pkg="tf" type="static_transform_publisher" name="gps2base_publisher" args="0 0 0 0 0 0 $(arg base_link_frame_id) gps 10" />
-  <node pkg="tf" type="static_transform_publisher" name="imu2base_publisher" args="0 0 0 0 0 0 $(arg base_link_frame_id) imu 10" />
+  <node pkg="tf" type="static_transform_publisher" name="lidar2base_publisher" args="0 0 0.77 0 0 0 $(arg base_link_frame_id) velodyne 10" />
+  <node pkg="tf" type="static_transform_publisher" name="gps2base_publisher" args="0 0 0.5 0 0 0 $(arg base_link_frame_id) gps 10" />
+  <node pkg="tf" type="static_transform_publisher" name="imu2base_publisher" args="0 0 0.5 0 0 0 $(arg base_link_frame_id) imu 10" />
 
 
   <!-- in case you use velodyne_driver, comment out the following line -->
-   <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen"/> 
+   <!-- <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen"/>  -->
 
   <!-- prefiltering_nodelet -->
   <node pkg="nodelet" type="nodelet" name="prefiltering_nodelet" args="load hdl_graph_slam/PrefilteringNodelet $(arg nodelet_manager)">
