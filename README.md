@@ -38,6 +38,17 @@
 ```
 roslaunch velodyne_pointcloud VLP16_points.launch
 rosrun changmin convert_gps.py
-roslaunch hdl_graph_slam.launch
+roslaunch hdl_graph_slam hdl_graph_slam.launch
 rviz
+```
+
+## Localization
+```
+rosrun changmin convert_gps.py
+rosrun changmin make_odom.py
+
+roslaunch velodyne_pointcloud VLP16_points.launch
+roslaunch hdl_localization hdl_localization.launch
+
+rviz -d hdl_localization.rviz
 ```
