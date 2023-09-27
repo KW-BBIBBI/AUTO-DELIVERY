@@ -19,17 +19,21 @@ options = {
   map_builder = MAP_BUILDER,
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
-  tracking_frame = "base_link",
+  tracking_frame = "imu",
   published_frame = "base_link",
+  -- 포즈를 게시하는 데 사용하는 ROS 프레임 ID입니다. 예를 들어 시스템의 다른 부분에서 "odom" 
+  -- 프레임이 제공되는 경우 "odom"으로 설정합니다. 이 경우 "map_frame"에서 "odom"의 포즈가 게시됩니다. 그렇지 않으면 "base_link"로 설정하는 것이 적절합니다.
   odom_frame = "odom",
   provide_odom_frame = true,
-  publish_frame_projected_to_2d = false,
+  -- 활성화된 경우 로컬, 루프 클로즈되지 않은 연속 포즈가 odom_frame으로 map_frame에 게시됩니다.
+
+  publish_frame_projected_to_2d = true,
   use_pose_extrapolator = true,
-  use_odometry = false,
+  use_odometry = true,
   use_nav_sat = false,
   use_landmarks = false,
-  num_laser_scans = 0,
-  num_multi_echo_laser_scans = 1,
+  num_laser_scans = 1,
+  num_multi_echo_laser_scans = 0,
   num_subdivisions_per_laser_scan = 10,
   num_point_clouds = 0,
   lookup_transform_timeout_sec = 0.2,
@@ -41,9 +45,14 @@ options = {
   fixed_frame_pose_sampling_ratio = 1.,
   imu_sampling_ratio = 1.,
   landmarks_sampling_ratio = 1.,
+  publish_to_tf = true,
 }
 
 MAP_BUILDER.use_trajectory_builder_2d = true
 TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 10
+TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching=true
+TRAJECTORY_BUILDER_2D.use_imu_data = true
+TRAJECTORY_BUILDER_2D.
+
 
 return options

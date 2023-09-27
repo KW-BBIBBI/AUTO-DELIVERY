@@ -14,9 +14,12 @@
   limitations under the License.
 -->
 
+
+<!-- launch file for auto_dili -->
+
 <launch>
-  <param name="robot_description"
-    textfile="$(find cartographer_ros)/urdf/backpack_2d.urdf" />
+  <!-- <param name="robot_description" -->
+    <!-- textfile="$(find cartographer_ros)/urdf/backpack_2d.urdf" /> -->
 
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />
@@ -24,9 +27,12 @@
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
-          -configuration_basename backpack_2d.lua"
+          -configuration_basename dilly_lua.lua"
       output="screen">
-    <remap from="echoes" to="horizontal_laser_2d" />
+    <remap from="scan" to="scan" />
+    <!-- <remap from="scan" to="scan" />
+    <remap from="scan" to="scan" /> -->
+
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
