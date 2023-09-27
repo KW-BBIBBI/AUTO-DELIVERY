@@ -9,7 +9,7 @@ class GpsConvert:
         rospy.Subscriber('/gps', GPSMessage, self.morai_gps_CB)
         self.gps_pub_ = rospy.Publisher( 'gps/geopoint', GeoPointStamped, queue_size=10 )
         self.slam_gps = GeoPointStamped()
-        self.slam_gps.header.frame_id = 'gps'
+        self.slam_gps.header.frame_id = 'gps_'
 
     def morai_gps_CB(self, data):
         self.slam_gps.position.latitude = data.latitude
