@@ -1,13 +1,11 @@
+<?xml version="1.0"?>
 <launch>
-
-    <!-- odom -->
-    <node pkg="tf_maker" type="gps_2_odom.py" name="make_odom" />
+    <node name="odom_tf_builder" pkg="tf_build" type="odom_.py" output="screen"/>
 
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_velodyne" args="0.06 0 0.5 0 0 0 base_link velodyne" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu" args="0.0 0 0.46 0 0 -3.14 base_link imu" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_gps" args="-0.02 0 0.74 0 0 0 base_link gps" />
 
-    <!-- Lidar -->
-    <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
+    <include filename="($find velodyne_pointcloud)/launch/VLP16_points.launch"/>
 
 </launch>
