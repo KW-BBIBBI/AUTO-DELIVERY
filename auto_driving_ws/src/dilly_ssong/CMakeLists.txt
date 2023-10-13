@@ -161,6 +161,8 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/gps_filter.py
   scripts/gps_filtfilt.py
+  scripts/mo2nv.py
+  scripts/make_odom_msg.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

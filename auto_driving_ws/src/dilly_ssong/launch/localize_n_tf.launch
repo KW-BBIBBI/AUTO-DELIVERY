@@ -1,15 +1,13 @@
+<?xml version="1.0"?>
 <launch>
-
-    <!-- odom -->
     <node pkg="dilly_ssong" type="gps_filter.py" name="filter_gps" />
-    <!-- <node pkg="dilly_ssong" type="gps_filtfilt.py" name="filtfilt_gps" /> -->
-
-    <node pkg="dilly_ssong" type="make_odom.py" name="make_odom" />
-
+    <node pkg="dilly_ssong" type="mo2nv.py" name="converter"/>
+    <node pkg="dilly_ssong" type="make_odom_msg.py" name="odom_msg" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_velodyne" args="0.06 0 0.5 0 0 0 base_link velodyne" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu" args="0.0 0 0.46 0 0 0 base_link imu" />
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_gps" args="-0.02 0 0.74 0 0 0 base_link gps" />
     
+    <include file="$(find hector_mapping)/launch/mapping_default.launch" />
     <include file="$(find robot_pose_ekf)/robot_pose_ekf.launch" />
-
+    
 </launch>

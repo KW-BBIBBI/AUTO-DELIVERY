@@ -8,7 +8,7 @@ class GPS_Filter_Node:
         rospy.init_node("GPS_Filtering_Node")
         rospy.loginfo("Starting GPS_Filter_Node as GPS_Filtering_Node")
         rospy.Subscriber("/gps_origin", GPSMessage, self.MORAI_GPS_CB)
-        self.filtered_pub = rospy.Publisher("gps", GPSMessage, queue_size=10)
+        self.filtered_pub = rospy.Publisher("filtered", GPSMessage, queue_size=10)
 
         # 초기 위치 정보 설정
         self.initial_latitude = 37.418536874388096  # 초기 위도
