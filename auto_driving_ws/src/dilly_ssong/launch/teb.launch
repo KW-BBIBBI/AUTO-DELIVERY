@@ -9,7 +9,7 @@
     <node pkg="dilly_ssong" type="make_6wheel_cmd.py" name="make_6wheel_cmd" />
 
 	<!-- ****** Maps *****  -->
-    <arg name="map_file" default="$(find dilly_ssong)/maps/indoor.yaml"/>
+    <arg name="map_file" default="$(find dilly_ssong)/maps/map_indoor.yaml"/>
   	
 	<!-- map server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
