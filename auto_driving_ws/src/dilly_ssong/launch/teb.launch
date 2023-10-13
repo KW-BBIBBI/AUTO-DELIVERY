@@ -1,6 +1,6 @@
 <launch>
     <!-- initial setting -->
-    <include file="$(find dilly_ssong)/launch/odom.launch" />
+    <include file="$(find dilly_ssong)/launch/localize_n_tf.launch" />
 
     <include file="$(find pointcloud_to_laserscan)/launch/sample_node.launch" />
 
@@ -9,8 +9,8 @@
     <node pkg="dilly_ssong" type="make_6wheel_cmd.py" name="make_6wheel_cmd" />
 
 	<!-- ****** Maps *****  -->
-    <arg name="map_file" default="$(find dilly_ssong)/maps/map_indoor.yaml"/>
-  	
+    <arg name="map_file" default="$(find dilly_ssong)/maps/indoor.yaml"/>
+<!-- ******************************Min********************************************888  	 -->
 	<!-- map server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 

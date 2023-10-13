@@ -163,6 +163,7 @@ catkin_install_python(PROGRAMS
   scripts/gps_filtfilt.py
   scripts/mo2nv.py
   scripts/make_odom_msg.py
+  scripts/gps_filterV2.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
