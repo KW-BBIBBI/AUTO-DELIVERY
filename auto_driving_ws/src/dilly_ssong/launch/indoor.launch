@@ -44,6 +44,10 @@
 		<param name="initial_pose_a"            value="0"/>
 	</node>
 
+<<<<<<< HEAD
 	  <!--  **************** Visualisation ****************  -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find dilly_ssong)/rviz/nav.rviz" />
+=======
+    <node pkg="dilly_ssong" type="indoor_path.py" name="indoor_path" />
+>>>>>>> 4f4fd572b9c8e8689b887499ce22c0573e6acca7
 </launch>

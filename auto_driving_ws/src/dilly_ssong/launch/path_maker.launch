@@ -1,4 +1,0 @@
-<launch>
-	<!-- args = "(경로가 생성되는 폴더 이름) (생성할 경로의 파일 이름) (x_offset) (y_offset)" -->
-	<node pkg="dilly_ssong" type="path_maker.py" name="maker" args="path one 334209.0789507285 4143042.501430065" output="screen" />
-</launch>

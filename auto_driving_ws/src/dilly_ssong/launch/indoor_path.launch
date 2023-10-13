@@ -1,0 +1,3 @@
+<launch>
+        <node pkg="dilly_ssong" type="indoor_path.py" name="path_follow" />
+</launch>

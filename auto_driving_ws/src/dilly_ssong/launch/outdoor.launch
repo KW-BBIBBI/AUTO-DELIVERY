@@ -21,4 +21,6 @@
 		<param name="initial_pose_y"            value="-0.219"/>
 		<param name="initial_pose_a"            value="1.92"/>
 	</node>
+
+    <node pkg="dilly_ssong" type="outdoor_path.py" name="outdoor_path" />
 </launch>

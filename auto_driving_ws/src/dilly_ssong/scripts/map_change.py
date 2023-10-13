@@ -12,7 +12,7 @@ class Map_Change:
 
         self.flag = Bool()
         self.flag.data = True
-
+        
         self.indoor = True
         self.outdoor = False
         self.changed = True
@@ -23,7 +23,7 @@ class Map_Change:
         self.imu_z = 10
 
         rate = rospy.Rate(20)
-
+        
         while not rospy.is_shutdown():
             if (self.imu_x == 0 and self.imu_y == 0 and self.imu_z == 0) and self.indoor:
                 os.system("gnome-terminal -- bash -c 'roslaunch dilly_ssong outdoor.launch'")
@@ -31,14 +31,14 @@ class Map_Change:
                 self.outdoor = True
                 self.flag.data = False
                 rate.sleep()
-
+            
             elif (self.imu_x == 0 and self.imu_y == 0 and self.imu_z == 0) and self.outdoor:
                 os.system("gnome-terminal -- bash -c 'roslaunch dilly_ssong indoor.launch'")
                 self.outdoor = False
                 self.indoor = True
                 self.flag.data = True
                 rate.sleep()
-
+            
             self.flag_pub.publish(self.flag.data)
             rate.sleep()
 
