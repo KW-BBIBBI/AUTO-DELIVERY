@@ -19,16 +19,27 @@ class Map_Change:
         self.imu_z = 10
 
         rate = rospy.Rate(20)
-        
+        os.system('rosrun map_server map_server ~/auto_driving_ws/src/dilly_ssong/maps/indoor.yaml')
+
         while not rospy.is_shutdown():
             if (self.imu_x == 0 and self.imu_y == 0 and self.imu_z == 0) and self.indoor:
-                os.system("gnome-terminal -- bash -c 'roslaunch dilly_ssong outdoor.launch'")
+                    # Kill the map server node if it's running
+                os.system('pkill map_server')
+
+                # Load a new map file (assuming it's in the current directory)
+                os.system('rosrun map_server map_server /auto_driving_ws/src/dilly_ssong/maps/indoor.yaml')
+
                 self.indoor = False
                 self.outdoor = True
                 rate.sleep()
             
             elif (self.imu_x == 0 and self.imu_y == 0 and self.imu_z == 0) and self.outdoor:
-                os.system("gnome-terminal -- bash -c 'roslaunch dilly_ssong indoor.launch'")
+                # Kill the map server node if it's running
+                os.system('pkill map_server')
+
+                # Load a new map file (assuming it's in the current directory)
+                os.system('rosrun map_server map_server /auto_driving_ws/src/dilly_ssong/maps/outdoor.yaml')
+
                 self.outdoor = False
                 self.indoor = True
                 rate.sleep()
