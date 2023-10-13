@@ -1,18 +1,49 @@
 <launch>
-    <!-- ****** Maps *****  -->
+    <!-- initial setting -->
+    <node pkg="dilly_ssong" type="make_odom_indoor.py" name="indoor_odom_maker" />
+    <include file="$(find dilly_ssong)/launch/localize_n_tf.launch" />
+
+    <include file="$(find pointcloud_to_laserscan)/launch/sample_node.launch" />
+
+	<include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
+
+    <node pkg="dilly_ssong" type="make_6wheel_cmd.py" name="make_6wheel_cmd" />
+
+	<!-- ****** Maps *****  -->
     <arg name="map_file" default="$(find dilly_ssong)/maps/indoor.yaml"/>
-  	
+	<!-- ******************************Min********************************************888  	 -->
 	<!-- map server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
-    <include file="$(find dilly_ssong)/launch/odom.launch" />
+	<!-- map changer -->
+	<node pkg="dilly_ssong" type="map_change.py" name="map_change" />
 
-    <!-- filter gps add-->
-    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <!--  ************** Navigation ***************  -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find teb_local_planner_tutorials)/cfg/dilly/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  	  	<rosparam file="$(find teb_local_planner_tutorials)/cfg/dilly/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  		<rosparam file="$(find teb_local_planner_tutorials)/cfg/dilly/local_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find teb_local_planner_tutorials)/cfg/dilly/global_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find teb_local_planner_tutorials)/cfg/dilly/teb_local_planner_params.yaml" command="load" />
+
+		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" />
+		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+		<param name="controller_frequency" value="5.0" />
+		<param name="controller_patience" value="15.0" />
+
+        <param name="clearing_rotation_allowed" value="false" /> <!-- Our carlike robot is not able to rotate in place -->
+	</node>
+
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
 		<rosparam file="$(find teb_local_planner_tutorials)/cfg/amcl_params.yaml" command="load" />
 
-        <param name="initial_pose_x"            value="13.8"/>
-		<param name="initial_pose_y"            value="0.991"/>
-		<param name="initial_pose_a"            value="0.741"/>
+        <param name="initial_pose_x"            value="0"/>
+		<param name="initial_pose_y"            value="0"/>
+		<param name="initial_pose_a"            value="0"/>
 	</node>
+
+	  <!--  **************** Visualisation ****************  -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find dilly_ssong)/rviz/nav.rviz" />
 </launch>
