@@ -3,14 +3,18 @@ import rospy
 import numpy as np
 from morai_msgs.msg import GPSMessage
 from filterpy.kalman import KalmanFilter
+from std_msgs.msg import Bool
 
 class GPS_Filter_Node:
     def __init__(self):
         rospy.init_node("GPS_Filtering_Node")
         rospy.loginfo("Starting GPS_Filter_Node as GPS_Filtering_Node")
+        rospy.Subscriber("/flag", Bool, self.Flag_CB)
         rospy.Subscriber("/gps_origin", GPSMessage, self.MORAI_GPS_CB)
         self.filtered_pub = rospy.Publisher("gps", GPSMessage, queue_size=10)
-
+        
+        self.flag=Bool()
+        self.flag.data=True
         # 초기 위치 정보 설정
         self.initial_latitude = 37.416536874388096  # 초기 위도
         self.initial_longitude = 127.13135627199034  # 초기 경도
@@ -65,9 +69,12 @@ class GPS_Filter_Node:
 
         rate = rospy.Rate(50)
 
-        while not rospy.is_shutdown():
+        while self.flag.data:
             self.publish_Filtered_GPS()
             rate.sleep()
+
+    def Flag_CB(self,data):
+        self.flag = data
 
     def MORAI_GPS_CB(self, data):
         # Convert GPS data to a measurement vector
