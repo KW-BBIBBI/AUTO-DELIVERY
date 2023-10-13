@@ -1,6 +1,6 @@
 <launch>
     <!-- ****** Maps *****  -->
-    <arg name="map_file" default="$(find dilly_ssong)/maps/indoor.yaml"/>
+    <arg name="map_file" default="$(find dilly_ssong)/maps/map_real2.yaml"/>
   	
 	<!-- map server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
@@ -15,4 +15,6 @@
 		<param name="initial_pose_y"            value="0.991"/>
 		<param name="initial_pose_a"            value="0.741"/>
 	</node>
+
+    <node pkg="dilly_ssong" type="indoor_path.py" name="indoor_path" />
 </launch>

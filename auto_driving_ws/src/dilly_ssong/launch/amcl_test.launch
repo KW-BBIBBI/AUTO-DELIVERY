@@ -1,9 +1,0 @@
-<launch>
-    <node pkg="amcl" type="amcl" name="amcl" output="screen">
-		<rosparam file="$(find teb_local_planner_tutorials)/cfg/amcl_params.yaml" command="load" />
-
-        <param name="initial_pose_x"            value="13.937"/>
-		<param name="initial_pose_y"            value="1.471"/>
-		<param name="initial_pose_a"            value="-1.545"/>
-	</node>
-</launch>
