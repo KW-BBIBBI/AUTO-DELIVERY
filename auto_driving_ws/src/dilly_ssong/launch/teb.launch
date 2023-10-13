@@ -10,13 +10,12 @@
 
 	<!-- ****** Maps *****  -->
     <arg name="map_file" default="$(find dilly_ssong)/maps/indoor.yaml"/>
-<!-- ******************************Min********************************************888  	 -->
+	<!-- ******************************Min********************************************888  	 -->
 	<!-- map server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
 	<!-- map changer -->
-	<!-- <node pkg="dilly_ssong" type="map_change.py" name="map_change" /> -->
-	
+	<node pkg="dilly_ssong" type="map_change.py" name="map_change" />
 
     <!--  ************** Navigation ***************  -->
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">

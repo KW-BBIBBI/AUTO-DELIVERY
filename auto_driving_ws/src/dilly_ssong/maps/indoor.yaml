@@ -1,6 +1,6 @@
-image: indoor.pgm
+image: map_real2.pgm
 resolution: 0.050000
-origin: [-117.108582, -104.159924, 0.000000]
+origin: [-100, -70, 0.000000]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196

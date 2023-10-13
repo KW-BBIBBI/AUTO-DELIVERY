@@ -159,11 +159,11 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  scripts/gps_filter.py
-  scripts/gps_filtfilt.py
-  scripts/mo2nv.py
   scripts/make_odom_msg.py
   scripts/gps_filterV2.py
+  scripts/map_change.py
+  scripts/make_odom_indoor.py
+  scripts/make_odom_outdoor.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
